@@ -27,5 +27,6 @@ func (r *ProfileRoute) Routes(e *echo.Group) {
 	g := e.Group("/profile")
 
 	g.GET("/:id", r.profileHandler.GetProfile, r.AuthMiddleware.CheckLogin)
+	g.GET("", r.profileHandler.GetProfiles, r.AuthMiddleware.CheckLogin)
 
 }

@@ -38,3 +38,20 @@ func (h *ProfileHandler) GetProfile(c echo.Context) error {
 		Data:    resp,
 	})
 }
+
+func (h *ProfileHandler) GetProfiles(c echo.Context) error {
+	var req profile.GetProfilesReq
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, base.Resp{Message: err.Error()})
+	}
+
+	resp, err := h.profileUC.GetProfiles(c.Request().Context(), req)
+	if err != nil {
+		return c.JSON(base.GetStatusCode(err), base.GetRespErr(err))
+	}
+
+	return c.JSON(http.StatusOK, base.Resp{
+		Message: "Berhasil Mendapatkan Profile",
+		Data:    resp,
+	})
+}

@@ -21,6 +21,8 @@ func ConnectDB() {
 		Env.DB.Schema,
 	)
 
+	fmt.Println(dsn)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: true,
 		PrepareStmt:            true,

@@ -23,4 +23,5 @@ func parseAccount(acc entity.Account) AccountResp {
 type AccountRepository interface {
 	Find(ctx context.Context, filter entity.Account) (entity.Account, error)
 	Create(ctx context.Context, acc entity.Account) (entity.Account, error)
+	Get(ctx context.Context, acc entity.Account) ([]entity.Account, error)
 }

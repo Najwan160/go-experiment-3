@@ -5,6 +5,7 @@ import (
 
 	"github.com/Najwan160/go-experiment-3/code/domain/auth"
 	"github.com/Najwan160/go-experiment-3/code/domain/base"
+	"github.com/Najwan160/go-experiment-3/code/domain/entity"
 	"github.com/Najwan160/go-experiment-3/code/domain/profile"
 )
 
@@ -58,4 +59,30 @@ func (uc *ProfileUsecase) GetProfile(ctx context.Context, req profile.GetProfile
 	// }
 
 	return response, nil
+}
+
+func (uc *ProfileUsecase) GetProfiles(ctx context.Context, req profile.GetProfilesReq) (resp []profile.GetProfilesResp, err error) {
+	var res []profile.GetProfilesResp
+
+	if err = uc.validator.Validate(req); err != nil {
+		return []profile.GetProfilesResp{}, err
+	}
+
+	filter := entity.Account{
+		Name: req.Name,
+	}
+
+	acc, err := uc.accountRepo.Get(ctx, filter)
+	if err != nil {
+		return []profile.GetProfilesResp{}, err
+	}
+
+	for _, v := range acc {
+		res = append(res, profile.GetProfilesResp{
+			ID:   v.ID,
+			Name: v.Name,
+		})
+	}
+
+	return res, nil
 }

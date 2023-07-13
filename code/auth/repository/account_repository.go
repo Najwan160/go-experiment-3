@@ -34,6 +34,19 @@ func (repo *AccountRepository) Find(ctx context.Context, filter entity.Account) 
 	return res, err
 }
 
+func (repo *AccountRepository) Get(ctx context.Context, acc entity.Account) (res []entity.Account, err error) {
+	err = repo.db.FromContext(ctx).(*gorm.DB).
+		WithContext(ctx).
+		Where(acc).
+		Find(&res).
+		Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = base.ErrNotFound
+	}
+
+	return res, err
+}
 func (repo *AccountRepository) Create(ctx context.Context, acc entity.Account) (res entity.Account, err error) {
 	err = repo.db.FromContext(ctx).(*gorm.DB).
 		WithContext(ctx).
